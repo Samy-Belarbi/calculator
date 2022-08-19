@@ -1,0 +1,96 @@
+import { useState } from "react";
+
+// Bug commencer par 0
+// Bug avec ajouts de points dans un nombre déjà décimal
+
+const Calculator = () => {
+  // STATES
+
+  // En dehors de la parenthèse
+  const [calc, setCalc] = useState("");
+
+  // Dans la parenthèse
+  const [result, setResult] = useState("");
+
+  const ops = ["/", "*", "-", "+", "."];
+
+  // COMPORTEMENTS
+  const updateCalc = (value) => {
+    if (
+      (ops.includes(value) && calc === "") ||
+      (ops.includes(value) && ops.includes(calc.slice(-1)))
+    ) {
+      return;
+    }
+
+    setCalc(calc + value);
+
+    if (!ops.includes(value)) {
+      setResult(eval(calc + value).toString());
+    }
+  };
+
+  const calculate = () => {
+    if (!ops.includes(calc.charAt(calc.length - 1))) {
+      setCalc(eval(calc).toString());
+      setResult("");
+    }
+  };
+
+  const importDigits = () => {
+    const digits = [];
+
+    for (let i = 1; i < 10; i++) {
+      digits.push(
+        <button key={i} onClick={() => updateCalc(i.toString())}>
+          {i}
+        </button>
+      );
+    }
+
+    return digits;
+  };
+
+  const deleteLastNumber = () => {
+    if (calc !== "") {
+      const newValue = calc.slice(0, -1);
+      const lastCharac = newValue.charAt(newValue.length - 1);
+      setCalc(newValue);
+
+      if (!ops.includes(lastCharac) && lastCharac !== "") {
+        setResult(eval(newValue).toString());
+      }
+
+      if (!ops.includes(lastCharac) && lastCharac === "") {
+        setResult("");
+      }
+
+      return;
+    }
+  };
+
+  // AFFICHAGE
+  return (
+    <div className="calculator">
+      <div className="result">
+        {result ? <span>({result})</span> : ""}
+        {calc || "0"}
+      </div>{" "}
+      <div className="operators">
+        <button onClick={() => updateCalc("/")}>/</button>
+        <button onClick={() => updateCalc("*")}>*</button>
+        <button onClick={() => updateCalc("-")}>-</button>
+        <button onClick={() => updateCalc("+")}>+</button>
+        <button onClick={deleteLastNumber}>DEL</button>
+      </div>
+      <div className="digits">
+        {importDigits()}
+        <button onClick={() => updateCalc(".")}>.</button>
+        <button onClick={() => updateCalc("0")}>0</button>
+        <button onClick={calculate}>=</button>
+      </div>
+    </div>
+  );
+};
+
+export default Calculator;
