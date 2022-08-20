@@ -3,6 +3,8 @@ import { useState } from "react";
 // Bug commencer par 0
 // Bug avec ajouts de points dans un nombre déjà décimal
 
+const ops = ["/", "*", "-", "+", "."];
+
 const Calculator = () => {
   // STATES
 
@@ -11,8 +13,6 @@ const Calculator = () => {
 
   // Dans la parenthèse
   const [result, setResult] = useState("");
-
-  const ops = ["/", "*", "-", "+", "."];
 
   // COMPORTEMENTS
   const updateCalc = (value) => {
@@ -75,7 +75,7 @@ const Calculator = () => {
       <div className="result">
         {result ? <span>({result})</span> : ""}
         {calc || "0"}
-      </div>{" "}
+      </div>
       <div className="operators">
         <button onClick={() => updateCalc("/")}>/</button>
         <button onClick={() => updateCalc("*")}>*</button>
@@ -84,7 +84,13 @@ const Calculator = () => {
         <button onClick={deleteLastNumber}>DEL</button>
       </div>
       <div className="digits">
-        {importDigits()}
+        {Array(9)
+          .fill(0)
+          .map((_, i) => (
+            <button key={i + 1} onClick={() => updateCalc(String(i + 1))}>
+              {i + 1}
+            </button>
+          ))}
         <button onClick={() => updateCalc(".")}>.</button>
         <button onClick={() => updateCalc("0")}>0</button>
         <button onClick={calculate}>=</button>
