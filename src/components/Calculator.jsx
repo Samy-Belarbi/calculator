@@ -19,7 +19,6 @@ const Calculator = () => {
       (calc.includes(".") && value === ".") ||
       (value === "0" && calc.slice(0) === "0" && !calc.includes("."))
     ) {
-      console.log(calc.slice());
       return;
     }
 
