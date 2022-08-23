@@ -1,8 +1,5 @@
 import { useState } from "react";
 
-// Bug commencer par 0
-// Bug avec ajouts de points dans un nombre déjà décimal
-
 const ops = ["/", "*", "-", "+", "."];
 
 const Calculator = () => {
@@ -18,8 +15,11 @@ const Calculator = () => {
   const updateCalc = (value) => {
     if (
       (ops.includes(value) && calc === "") ||
-      (ops.includes(value) && ops.includes(calc.slice(-1)))
+      (ops.includes(value) && ops.includes(calc.slice(-1))) ||
+      (calc.includes(".") && value === ".") ||
+      (value === "0" && calc.slice(0) === "0" && !calc.includes("."))
     ) {
+      console.log(calc.slice());
       return;
     }
 
